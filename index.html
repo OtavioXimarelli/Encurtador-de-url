@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encurtador de URL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/loading.css">
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                Encurtando sua URL<span class="loading-dots"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>✨ Encurtador de URL</h1>
+        
+        <div class="input-group">
+            <label>Digite sua URL:</label>
+            <input type="url" class="url-input" id="urlInput" placeholder="https://exemplo.com/sua-url-longa">
+            <div class="char-count">0/2000 caracteres</div>
+        </div>
+
+        <button class="shorten-btn" onclick="shortenUrl()">
+            <span>🔗</span> Encurtar URL
+        </button>
+
+        <div class="result-section" id="result" style="display: none;">
+            <div class="result-title">
+                <span>🎉</span> URL Encurtada
+            </div>
+            <div class="shortened-url" id="shortUrl"></div>
+            <div class="expiration">Esta URL expirará em 2 dias</div>
+
+            <div class="share-section">
+                <div class="share-title">Compartilhar via:</div>
+                <div class="share-buttons">
+                    <button class="share-btn copy-btn" onclick="copyToClipboard()">
+                        📋 Copiar
+                    </button>
+                    <button class="share-btn whatsapp-btn" onclick="shareViaWhatsApp()">
+                        📱 WhatsApp
+                    </button>
+                    <button class="share-btn telegram-btn" onclick="shareViaTelegram()">
+                        ✈️ Telegram
+                    </button>
+                    <button class="share-btn x-btn" onclick="shareViaX()">
+                        𝕏 X
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section" id="historySection">
+            <div class="history-title">
+                <h3>Histórico</h3>
+                <button class="clear-btn" onclick="clearHistory()">Limpar</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
+
