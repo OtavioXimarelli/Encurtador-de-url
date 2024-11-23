@@ -8,11 +8,6 @@ class UrlShortener {
         this.shortUrlDiv = document.getElementById('shortUrl');
         this.loadingOverlay = document.getElementById('loadingOverlay');
         this.historyList = document.getElementById('historyList');
-        this.expirationText = document.querySelector('.expiration');
-        
-        // Atualiza o texto de expiração com o valor do .env
-        const days = import.meta.env.VITE_URL_EXPIRATION_DAYS || 2;
-        this.expirationText.textContent = `Esta URL expirará em ${days} dias`;
 
         this.initializeEventListeners();
         this.loadHistory();
@@ -34,27 +29,62 @@ class UrlShortener {
     }
 
     async shortenUrl() {
-        if (!this.urlInput.value) {
-            alert('Por favor, insira uma URL válida');
+        const url = this.urlInput.value.trim();
+        
+        if (!url) {
+            this.showError('Por favor, insira uma URL válida');
+            return;
+        }
+
+        try {
+            // Validação básica de URL
+            new URL(url);
+        } catch (e) {
+            this.showError('Por favor, insira uma URL válida (incluindo http:// ou https://)');
             return;
         }
 
         this.loadingOverlay.style.display = 'flex';
 
         try {
-            const shortUrl = await ApiService.shortenUrl(this.urlInput.value);
-            this.shortUrlDiv.innerHTML = `<a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
-            this.resultSection.style.display = 'block';
-            
-            // Salva no histórico
-            StorageManager.saveUrl(this.urlInput.value, shortUrl);
+            const shortUrl = await ApiService.shortenUrl(url);
+            this.showSuccess(shortUrl);
+            StorageManager.saveUrl(url, shortUrl);
             this.loadHistory();
         } catch (error) {
-            console.error('Erro:', error);
-            alert('Erro ao encurtar URL: ' + error.message);
+            console.error('Erro ao encurtar:', error);
+            this.showError(error.message);
         } finally {
             this.loadingOverlay.style.display = 'none';
         }
+    }
+
+    showSuccess(shortUrl) {
+        this.shortUrlDiv.innerHTML = `
+            <a href="${shortUrl}" target="_blank" class="shortened-link">
+                ${shortUrl}
+            </a>
+        `;
+        this.resultSection.style.display = 'block';
+    }
+
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        
+        // Remove mensagem de erro anterior se existir
+        const existingError = document.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+
+        this.urlInput.parentNode.insertBefore(errorDiv, this.urlInput.nextSibling);
+        
+        // Remove a mensagem após 5 segundos
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 5000);
     }
 
     loadHistory() {
@@ -77,11 +107,9 @@ class UrlShortener {
     }
 }
 
-// Inicializa a aplicação quando o DOM estiver carregado
+// Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     const app = new UrlShortener();
-    
-    // Expõe funções necessárias globalmente
     window.shortenUrl = () => app.shortenUrl();
     window.clearHistory = () => app.clearHistory();
 }); 
