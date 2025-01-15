@@ -84,7 +84,7 @@ class UrlShortener {
         // Remove a mensagem após 5 segundos
         setTimeout(() => {
             errorDiv.remove();
-        }, 5000);
+        }, 15000);
     }
 
     loadHistory() {
