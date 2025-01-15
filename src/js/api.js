@@ -1,6 +1,6 @@
 const config = {
-    baseUrl: import.meta.env.PUBLIC_API_BASE_URL || 'https://ik2wijh1zf.execute-api.us-east-1.amazonaws.com/deploy',
-    createPath: '/create',
+    baseUrl: import.meta.env.PUBLIC_API_BASE_URL || 'http://localhost:8080/api/urls',
+    createPath: '/shorten',
     expirationDays: parseInt(import.meta.env.PUBLIC_URL_EXPIRATION_DAYS) || 2
 };
 
@@ -23,12 +23,9 @@ export const ApiService = {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    body: JSON.stringify(urlData)
-                })
+                body: JSON.stringify(urlData)
             });
 
-            // Verifica se a resposta é JSON
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 const text = await response.text();
@@ -42,11 +39,11 @@ export const ApiService = {
 
             const data = await response.json();
             
-            if (!data.code) {
+            if (!data.shortUrl) {
                 throw new Error('Código de URL curta não encontrado na resposta');
             }
             
-            return `${config.baseUrl}/${data.code}`;
+            return `${config.baseUrl}/${data.shortUrl}`;
         } catch (error) {
             console.error('Erro detalhado:', error);
             if (error instanceof SyntaxError) {
