@@ -1,5 +1,5 @@
 const config = {
-    baseUrl:'https://54.225.14.112:80/api/urls',
+    baseUrl:'https://otavioshort.duckdns.org/api/urls',
     createPath: '/shorten',
     expirationDays: 30
 };
