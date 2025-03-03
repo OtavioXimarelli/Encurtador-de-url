@@ -1,7 +1,7 @@
 const config = {
-    baseUrl: import.meta.env.PUBLIC_API_BASE_URL || 'http://localhost:8080/api/urls',
+    baseUrl: import.meta.env.PUBLIC_API_BASE_URL || 'http://54.225.14.112//api/urls',
     createPath: '/shorten',
-    expirationDays: parseInt(import.meta.env.PUBLIC_URL_EXPIRATION_DAYS) || 2
+    expirationDays: 30
 };
 
 export const ApiService = {
