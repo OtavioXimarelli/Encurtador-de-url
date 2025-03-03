@@ -1,5 +1,5 @@
 const config = {
-    baseUrl: import.meta.env.PUBLIC_API_BASE_URL || 'http://54.225.14.112//api/urls',
+    baseUrl: import.meta.env.PUBLIC_API_BASE_URL || 'http://54.225.14.112/api/urls',
     createPath: '/shorten',
     expirationDays: 30
 };
