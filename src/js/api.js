@@ -1,5 +1,5 @@
 const config = {
-    baseUrl: import.meta.env.PUBLIC_API_BASE_URL || 'http://54.225.14.112/api/urls',
+    baseUrl:'http://54.225.14.112/api/urls',
     createPath: '/shorten',
     expirationDays: 30
 };
@@ -11,9 +11,7 @@ export const ApiService = {
         }
 
         const urlData = {
-            originalUrl,
-            expirationTime: (Math.floor(Date.now() / 1000) + 
-                (config.expirationDays * 24 * 60 * 60)).toString()
+            url: originalUrl // Alterado para corresponder ao formato esperado pelo backend
         };
 
         try {
@@ -52,4 +50,4 @@ export const ApiService = {
             throw error;
         }
     }
-}; 
+};
